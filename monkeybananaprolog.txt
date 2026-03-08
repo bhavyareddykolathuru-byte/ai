@@ -1,0 +1,29 @@
+initial(state(door, door, floor, no)).
+
+
+goal(state(_, _, _, yes)).
+
+
+move(state(door, door, floor, no), push,
+     state(center, center, floor, no)).
+
+move(state(center, center, floor, no), climb,
+     state(center, center, box, no)).
+
+move(state(center, center, box, no), grab,
+     state(center, center, box, yes)).
+
+
+solve(State, []) :-
+    goal(State).
+
+solve(State, [Action | Rest]) :-
+    move(State, Action, NewState),
+    solve(NewState, Rest).
+
+
+run :-
+    initial(S),
+    write('Initial State: '), write(S), nl,
+    solve(S, Plan),
+    write('Plan: '), write(Plan), nl.
