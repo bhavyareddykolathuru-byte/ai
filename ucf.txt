@@ -1,0 +1,44 @@
+import heapq
+
+n = int(input("Enter number of nodes: "))
+e = int(input("Enter number of edges: "))
+
+graph = [[] for _ in range(n)]
+
+print("Enter edges (u v cost):")
+for _ in range(e):
+    u, v, c = map(int, input().split())
+    graph[u].append((v, c))
+    graph[v].append((u, c))
+
+start = int(input("Enter start node: "))
+goal = int(input("Enter goal node: "))
+
+pq = [(0, start)]
+visited = [0]*n
+parent = [-1]*n
+
+while pq:
+    cost, node = heapq.heappop(pq)
+
+    if visited[node]:
+        continue
+
+    visited[node] = 1
+
+    if node == goal:
+        print("Goal reached")
+        print("Optimal cost =", cost)
+
+        path = []
+        while node != -1:
+            path.append(node)
+            node = parent[node]
+
+        print("Path:", *path[::-1])
+        break
+
+    for next_node, w in graph[node]:
+        if not visited[next_node]:
+            parent[next_node] = node
+            heapq.heappush(pq, (cost + w, next_node))
