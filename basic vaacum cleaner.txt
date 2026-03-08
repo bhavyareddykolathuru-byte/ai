@@ -1,0 +1,28 @@
+agent_table = {
+    ('Dirty','A') : 'Suck',
+    ('Dirty','B') : 'Suck',
+    ('Clean','A') : 'MoveRight',
+    ('Clean','B') : 'MoveLeft'
+}
+
+location = 'A'
+rooms = {'A':'Dirty', 'B':'Dirty'}
+
+for step in range(5):
+
+    percept = (rooms[location], location)
+    action = agent_table[percept]
+
+    print("Step",step+1)
+    print("Percept:",percept," Action:",action)
+
+    if action == 'Suck':
+        rooms[location] = 'Clean'
+
+    elif action == 'MoveRight':
+        location = 'B'
+
+    elif action == 'MoveLeft':
+        location = 'A'
+
+    print("Room Status:",rooms)
