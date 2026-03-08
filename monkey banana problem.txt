@@ -1,0 +1,41 @@
+from collections import deque
+
+initial = ("door", "door", "floor", False)
+
+def bfs():
+    q = deque([(initial, [])])
+    visited = set()
+
+    while q:
+        state, path = q.popleft()
+
+        if state in visited:
+            continue
+        visited.add(state)
+
+        m, b, s, banana = state
+
+        if banana:
+            return state, path
+
+        if m == b and b != "center":
+            q.append((("center","center","floor",False),
+                      path + ["push to center"]))
+
+    
+        if m == "center" and b == "center" and s == "floor":
+            q.append((("center","center","box",False),
+                      path + ["climb box"]))
+
+
+        if s == "box":
+            q.append((("center","center","box",True),
+                      path + ["grab banana"]))
+
+final, plan = bfs()
+
+print("Initial State:", initial)
+print("\nPlan:")
+for p in plan:
+    print(p)
+print("\nFinal State:", final)
